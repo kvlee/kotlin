@@ -2529,6 +2529,11 @@ public class LocalInspectionTestGenerated extends AbstractLocalInspectionTest {
             runTest("idea/testData/inspectionsLocal/memberVisibilityCanBePrivate/JvmFieldOnProperty.kt");
         }
 
+        @TestMetadata("sameClassFunctionCall.kt")
+        public void testSameClassFunctionCall() throws Exception {
+            runTest("idea/testData/inspectionsLocal/memberVisibilityCanBePrivate/sameClassFunctionCall.kt");
+        }
+
         @TestMetadata("subClassFunctionCall.kt")
         public void testSubClassFunctionCall() throws Exception {
             runTest("idea/testData/inspectionsLocal/memberVisibilityCanBePrivate/subClassFunctionCall.kt");
