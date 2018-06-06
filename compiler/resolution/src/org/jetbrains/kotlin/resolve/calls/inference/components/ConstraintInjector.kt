@@ -74,7 +74,9 @@ class ConstraintInjector(val constraintIncorporator: ConstraintIncorporator, val
         val typeCheckerContext = TypeCheckerContext(c, incorporatePosition, lowerType, upperType, possibleNewConstraints)
         typeCheckerContext.runIsSubtypeOf(lowerType, upperType)
 
+        var counter = 0
         while (possibleNewConstraints.isNotEmpty()) {
+            counter++
             val (typeVariable, constraint) = possibleNewConstraints.pop()
             if (c.shouldWeSkipConstraint(typeVariable, constraint)) continue
 
@@ -84,6 +86,15 @@ class ConstraintInjector(val constraintIncorporator: ConstraintIncorporator, val
             // it is important, that we add constraint here(not inside TypeCheckerContext), because inside incorporation we read constraints
             constraints.addConstraint(constraint)?.let {
                 constraintIncorporator.incorporate(typeCheckerContext, typeVariable, it)
+            }
+
+            if (counter > 100) {
+                throw RuntimeException(
+                    "Too long operation:" +
+                            "$lowerType: $lowerType" +
+                            "$upperType: $upperType" +
+                            "stackTrace: ${Thread.currentThread().stackTrace}"
+                )
             }
         }
     }
